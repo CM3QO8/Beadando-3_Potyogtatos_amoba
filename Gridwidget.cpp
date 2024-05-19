@@ -16,10 +16,12 @@ void GridWidget::handle(genv::event ev) {
             dropDisk();
             if (checkWin()) {
                 gameOver = true;
+                if (!winningLine.empty()) {
                 if (currentPlayer == 1) {
                     yellowWins++;
                 } else {
                     redWins++;
+                    }
                 }
             }
         }
@@ -69,13 +71,20 @@ bool GridWidget::checkWin() {
                     checkLine(x, y, 0, 1) ||
                     checkLine(x, y, 1, 1) ||
                     checkLine(x, y, 1, -1))
-                {
+                    {
                     return true;
                 }
             }
         }
     }
-    return false;
+    for (int x = 0; x < cols; ++x) {
+        if (grid[x][0] == 0) {
+            return false;
+        }
+    }
+
+    gameOver = true;
+    return true;
 }
 
 void GridWidget::resetGame() {
